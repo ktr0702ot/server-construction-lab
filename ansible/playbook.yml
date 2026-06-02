@@ -1,0 +1,21 @@
+---
+- name: web01の基本設定
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: パッケージリストを更新
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Nginxをインストール
+      apt:
+        name: nginx
+        state: present
+
+    - name: Nginxを自動起動・自動起動設定
+      service:
+        name: nginx
+        state: started
+        enabled: yes
