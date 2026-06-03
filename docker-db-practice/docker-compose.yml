@@ -1,0 +1,15 @@
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+  app:
+    build: .
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    command: php -S 0.0.0.0:9000
+    ports:
+      - "9000:9000"
