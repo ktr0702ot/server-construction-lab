@@ -41,7 +41,7 @@ resource "aws_route_table" "main" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id  = aws_internet_gateway.main.id
+    gateway_id = aws_internet_gateway.main.id
   }
   tags = {
     Name = "${var.project_name}-rtb"
@@ -49,14 +49,14 @@ resource "aws_route_table" "main" {
 }
 
 resource "aws_route_table_association" "main" {
-  subnet_id       = aws_subnet.main.id
-  route_table_id  = aws_route_table.main.id
+  subnet_id      = aws_subnet.main.id
+  route_table_id = aws_route_table.main.id
 }
 
 # セキュリティグループ
 resource "aws_security_group" "main" {
-  name    = "${var.project_name}-sg"
-  vpc_id  = aws_vpc.main.id
+  name   = "${var.project_name}-sg"
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 22
@@ -64,12 +64,12 @@ resource "aws_security_group" "main" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks  = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -86,19 +86,19 @@ resource "aws_security_group" "main" {
 
 # キーペア
 resource "aws_key_pair" "main" {
-  key_name    = "${var.project_name}-key"
+  key_name   = "${var.project_name}-key"
   public_key = var.public_key
 }
 
 # EC2
 resource "aws_instance" "main" {
-  ami                           = var.ami
-  instance_type                 = var.instance_type
-  subnet_id                     = aws_subnet.main.id
-  vpc_security_group_ids        = [aws_security_group.main.id]
-  key_name                      = aws_key_pair.main.key_name
-  associate_public_ip_address   = true
-  
+  ami                         = var.ami
+  instance_type               = var.instance_type
+  subnet_id                   = aws_subnet.main.id
+  vpc_security_group_ids      = [aws_security_group.main.id]
+  key_name                    = aws_key_pair.main.key_name
+  associate_public_ip_address = true
+
   tags = {
     Name = "${var.project_name}-ec2"
   }
